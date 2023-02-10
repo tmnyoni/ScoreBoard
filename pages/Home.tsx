@@ -7,56 +7,76 @@ import {
     TextInput,
     Button,
     ScrollView,
+    SafeAreaView,
+    StatusBar
 } from 'react-native';
 
 import { Player } from '../components/Player';
 import { AddPlayerInput } from '../components/AddPlayer';
+import { StatusBar as ExpoStatusBar} from 'expo-status-bar';
 
 export default function HomePage() {
     const [players, setPlayers] = useState<Player[]>([]);
 
-    function setPlayer(player: Player) {
-        setPlayers((prevPlayers) => [...prevPlayers, player]);
+    function addPlayer(player: Player) {
+        setPlayers(
+            (prevPlayers) => [...prevPlayers, player]
+        );
     }
 
     function removePlayer(playerId: string) {
-        setPlayers(players.filter((player) => player.id !== playerId));
+        setPlayers(players.filter(
+            (player) => player.id !== playerId
+        ));
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}> Add Players </Text>
+        <SafeAreaView style={styles.container}>
+            <ExpoStatusBar style="auto" />
+
+            <Text style={styles.title}>
+                Add Players
+            </Text>
+
             <ScrollView style={{ marginTop: 40 }}>
                 {players.map((player) => (
-                    <Player key={player.id} player={player} removePlayer={removePlayer} />
+                    <Player
+                        key={player.id}
+                        player={player}
+                        removePlayer={removePlayer}
+                    />
                 ))}
             </ScrollView>
-            <AddPlayerInput setPlayer={setPlayer} />
-            <Text style={styles.startButton}> Start Game </Text>
-        </View>
+
+            <AddPlayerInput addPlayer={addPlayer}/>
+            <Text style={styles.startButton}>
+                Start Game
+            </Text>
+
+        </SafeAreaView >
     );
 }
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 16,
+        fontSize: 20,
         textAlign: 'center',
-        marginTop: 40,
         fontWeight: "500",
+        marginTop: 80,
     },
     container: {
         flex: 1,
         backgroundColor: '#fff',
         justifyContent: 'center',
-        paddingLeft: 24,
-        paddingRight: 24,
+        padding: 24,
+        marginTop: StatusBar.currentHeight,
     },
     startButton: {
-        marginTop: 10,
-        marginBottom: 20,
+        marginTop: 24,
+        marginBottom: 24,
         borderRadius: 5,
         backgroundColor: '#00a4a7',
-        padding: 8,
+        padding: 10,
         textAlign: 'center',
         color: '#fff',
     },

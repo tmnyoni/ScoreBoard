@@ -2,19 +2,23 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import type { Player } from './Player';
 
+import { v4 as uuidv4 } from 'uuid';
+export function generateId() {
+    return uuidv4();
+}
+
 export type Props = {
-    setPlayer: (player: Player) => void;
+    addPlayer: (player: Player) => void;
 };
 
-import { v4 as uuidv4 } from 'uuid';
-
 export function AddPlayerInput(props: Props) {
-    const { setPlayer } = props;
-    const [name, setName] = useState('');
-    const id = uuidv4();
+    const { addPlayer } = props;
 
-    function submitInput() {
-        setPlayer({ id, name });
+    const id = generateId();
+    const [name, setName] = useState<string>();
+
+    function onSubmitInput() {
+        addPlayer({ id, name });
     }
 
     return (
@@ -22,7 +26,7 @@ export function AddPlayerInput(props: Props) {
             placeholder="Enter player name"
             style={styles.addPlayerInput}
             onChangeText={setName}
-            onSubmitEditing={submitInput}
+            onSubmitEditing={onSubmitInput}
         />
     );
 }

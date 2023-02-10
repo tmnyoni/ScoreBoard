@@ -23,9 +23,15 @@ export function Player(props: Props) {
     return (
         <View style={styles.playerView}>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginLeft: 2 }}> {player.name} </Text>
+                <Text>
+                    {player.name}
+                </Text>
             </View>
-            <Text style={styles.deleteButton}>
+
+            <Text
+                style={styles.deleteButton}
+                onPress={() => removePlayer(player.id)}
+            >
                 Delete
             </Text>
         </View>
@@ -39,12 +45,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyItem: 'between',
         borderWidth: 1,
-        borderColor: '#dae3e5',
-        marginTop: 5,
-        paddingLeft: 8,
-        paddingRight: 8,
-        paddingTop: 5,
-        paddingBottom: 5,
+        borderColor: '#ebf3e5',
+        marginTop: 8,
+        padding: 10,
         fontWeight: 300,
         borderRadius: 5,
     },
@@ -53,8 +56,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#df6883',
         paddingLeft: 10,
         paddingRight: 10,
-        paddingTop: 3,
-        paddingBottom: 3,
+        paddingTop: 5,
+        paddingBottom: 5,
         color: '#fff',
         borderRadius: 4,
     },
