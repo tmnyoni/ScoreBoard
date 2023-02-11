@@ -46,16 +46,25 @@ export default function GameScreen({ navigation, route }) {
 
         const isPlayerAlreadyExists = isPlayerOnScoreBoard(player)
         if (isPlayerAlreadyExists)
-            setGameScoreBoard(prevBoard =>
-                [...prevBoard.filter(board => board.player.id !== player.id),
-                { player, score: prevBoard.filter(item => item.player.id === player.id)[0].score + 10 }
-                ]
-            );
+            setGameScoreBoard(prevBoard => [
+                ...prevBoard.filter(board => board.player.id !== player.id),
+                {
+                    player,
+                    score: prevBoard.filter(item =>
+                        item.player.id === player.id)[0].score + parseInt(currentScore)
+                }
+            ]);
         else
-            setGameScoreBoard(prevBoard =>
-                [...prevBoard, { player, score: 10 }]
-            );
+            setGameScoreBoard(prevBoard => [
+                ...prevBoard,
+                {
+                    player,
+                    score: parseInt(currentScore)
+                }
+            ]);
     }
+
+    const [currentScore, setCurrentScore] = useState<string>('');
 
     function endGame() {
         navigation.navigate("Results", { gameScoreBoard });
@@ -71,7 +80,12 @@ export default function GameScreen({ navigation, route }) {
                 <Text style={{ textAlign: "center", fontSize: 16, marginVertical: 10, }}>
                     {players[currentTurn].name} Turn
                 </Text>
-                <TextInput placeholder="Enter score" style={styles.addPlayerScoreInput} />
+                <TextInput
+                    keyboardType="numeric"
+                    placeholder="Enter score"
+                    style={styles.addPlayerScoreInput}
+                    onChangeText={setCurrentScore}
+                />
 
                 <Text onPress={() => endPlayerTurn(players[currentTurn])} style={styles.endTurnButton}>
                     End turn
