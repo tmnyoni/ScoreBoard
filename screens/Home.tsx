@@ -4,7 +4,6 @@ import {
     StyleSheet,
     Text,
     View,
-    TextInput,
     Button,
     ScrollView,
     SafeAreaView,
@@ -13,12 +12,15 @@ import {
 
 import { Player } from '../components/Player';
 import { AddPlayerInput } from '../components/AddPlayer';
-import { StatusBar as ExpoStatusBar} from 'expo-status-bar';
+import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({ navigation }) {
     const [players, setPlayers] = useState<Player[]>([]);
+    const [noPlayerError, setNoPlayerError] = useState<string>()
 
     function addPlayer(player: Player) {
+        setNoPlayerError('');
+
         setPlayers(
             (prevPlayers) => [...prevPlayers, player]
         );
@@ -30,8 +32,11 @@ export default function HomeScreen({navigation}) {
         ));
     }
 
-    function startGame(){
-        navigation.navigate("Game Page");
+    function startGame() {
+        if (players.length > 0)
+            navigation.navigate("Game", { players });
+        else
+            setNoPlayerError('You haven\'t added players');
     }
 
     return (
@@ -41,6 +46,14 @@ export default function HomeScreen({navigation}) {
             <Text style={styles.title}>
                 Add Players
             </Text>
+
+            {noPlayerError && (
+                <View style={styles.errorContainer}>
+                    <Text style={styles.errorText}>
+                        {noPlayerError}
+                    </Text>
+                </View>
+            )}
 
             <ScrollView style={{ marginTop: 40 }}>
                 {players.map((player) => (
@@ -52,7 +65,7 @@ export default function HomeScreen({navigation}) {
                 ))}
             </ScrollView>
 
-            <AddPlayerInput addPlayer={addPlayer}/>
+            <AddPlayerInput addPlayer={addPlayer} />
             <Text style={styles.startButton} onPress={startGame}>
                 Start Game
             </Text>
@@ -83,4 +96,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#fff',
     },
+    errorContainer: {
+        borderWidth: 1,
+        borderColor: "red",
+        borderRadius: 5,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    errorText: {
+        color: "red",
+    }
 });
