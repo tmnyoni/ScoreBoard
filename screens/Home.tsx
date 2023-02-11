@@ -10,7 +10,9 @@ import {
     StatusBar
 } from 'react-native';
 
-import { Player } from '../components/Player';
+import type { Player } from '../components/Player';
+import { PlayerItem } from '../components/Player';
+
 import { AddPlayerInput } from '../components/AddPlayer';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 
@@ -57,7 +59,7 @@ export default function HomeScreen({ navigation }) {
 
             <ScrollView style={{ marginTop: 40 }}>
                 {players.map((player) => (
-                    <Player
+                    <PlayerItem
                         key={player.id}
                         player={player}
                         removePlayer={removePlayer}

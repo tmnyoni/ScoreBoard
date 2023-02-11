@@ -17,7 +17,7 @@ type Props = {
     removePlayer: (id: string) => void;
 };
 
-export function Player(props: Props) {
+export function PlayerItem(props: Props) {
     const { player, removePlayer } = props;
 
     return (

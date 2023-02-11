@@ -8,7 +8,7 @@ import {
 
 import type { Player } from "../components/Player";
 
-type ScoreBoard = {
+export type ScoreBoard = {
     player: Player;
     score: number,
 }
@@ -17,12 +17,11 @@ export default function GameScreen({ navigation, route }) {
     const players: Player[] = route.params.players;
     const [gameScoreBoard, setGameScoreBoard] = useState<ScoreBoard[]>([]);
 
-    
     const [round, setRound] = useState<number>(1);
     function nextRound() {
         setRound(prevRound => prevRound + 1)
     }
-    
+
     const [currentTurn, setCurrentTurn] = useState<number>(0);
     function endPlayerTurn(player: Player) {
         // Exchange turns.
@@ -36,19 +35,11 @@ export default function GameScreen({ navigation, route }) {
         }
 
         // update player score.
-        // let playerScore = gameScoreBoard.filter(
-        //     score => score.player.id === player.id
-        // )[0];
-
-        // setGameScoreBoard(prevBoard =>
-        //     [...prevBoard, { player: playerScore.player, score: playerScore.score + 10 }]
-        // );
-
-        // console.log(JSON.stringify(gameScoreBoard))
+        setGameScoreBoard(prevBoard => [...prevBoard, { player, score: 10 }]);
     }
 
     function endGame() {
-        // end the game logic.
+        navigation.navigate("Results", { gameScoreBoard });
     }
 
     return (
