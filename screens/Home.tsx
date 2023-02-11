@@ -15,7 +15,7 @@ import { Player } from '../components/Player';
 import { AddPlayerInput } from '../components/AddPlayer';
 import { StatusBar as ExpoStatusBar} from 'expo-status-bar';
 
-export default function HomePage() {
+export default function HomeScreen({navigation}) {
     const [players, setPlayers] = useState<Player[]>([]);
 
     function addPlayer(player: Player) {
@@ -28,6 +28,10 @@ export default function HomePage() {
         setPlayers(players.filter(
             (player) => player.id !== playerId
         ));
+    }
+
+    function startGame(){
+        navigation.navigate("Game Page");
     }
 
     return (
@@ -49,7 +53,7 @@ export default function HomePage() {
             </ScrollView>
 
             <AddPlayerInput addPlayer={addPlayer}/>
-            <Text style={styles.startButton}>
+            <Text style={styles.startButton} onPress={startGame}>
                 Start Game
             </Text>
 
@@ -69,7 +73,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'center',
         padding: 24,
-        marginTop: StatusBar.currentHeight,
     },
     startButton: {
         marginTop: 24,
