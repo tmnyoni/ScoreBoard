@@ -10,6 +10,13 @@ import type { ScoreBoard } from './Game';
 export default function ResultScreen({ navigation, route }) {
     const scoreBoard: ScoreBoard[] = route.params.gameScoreBoard;
 
+    function onRestart() {
+        //reset the state and go to the home.
+
+        //return to the home screen.
+        navigation.navigate('Home');
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <View>
@@ -22,11 +29,13 @@ export default function ResultScreen({ navigation, route }) {
                         </View>
                     )}
                 </ScrollView>
+                <Text onPress={onRestart} style={styles.resetGameButton}>
+                    Restart game
+                </Text>
             </View>
         </SafeAreaView>
     )
 }
-
 
 const styles = StyleSheet.create({
     title: {
@@ -53,4 +62,13 @@ const styles = StyleSheet.create({
         fontWeight: 300,
         borderRadius: 5,
     },
+    resetGameButton: {
+        textAlign: "center",
+        padding: 10,
+        backgroundColor: '#df6883',
+        borderRadius: 5,
+        color: "white",
+        fontWeight: "500",
+        marginTop: 100,
+    }
 });

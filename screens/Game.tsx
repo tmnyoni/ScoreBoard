@@ -17,6 +17,16 @@ export default function GameScreen({ navigation, route }) {
     const players: Player[] = route.params.players;
     const [gameScoreBoard, setGameScoreBoard] = useState<ScoreBoard[]>([]);
 
+    function isPlayerOnScoreBoard(player: Player) {
+        return gameScoreBoard.filter(
+            boardItem => boardItem.player.id === player.id
+        ).length > 0;
+    }
+
+    // useEffect(()=>{
+    //     const playerOnBoard = isPlayerOnScoreBoard()
+    // })
+
     const [round, setRound] = useState<number>(1);
     function nextRound() {
         setRound(prevRound => prevRound + 1)
@@ -34,8 +44,17 @@ export default function GameScreen({ navigation, route }) {
             setCurrentTurn(prevTurn => prevTurn + 1)
         }
 
-        // update player score.
-        setGameScoreBoard(prevBoard => [...prevBoard, { player, score: 10 }]);
+        const isPlayerAlreadyExists = isPlayerOnScoreBoard(player)
+        if (isPlayerAlreadyExists)
+            setGameScoreBoard(prevBoard =>
+                [...prevBoard.filter(board => board.player.id !== player.id),
+                { player, score: prevBoard.filter(item => item.player.id === player.id)[0].score + 10 }
+                ]
+            );
+        else
+            setGameScoreBoard(prevBoard =>
+                [...prevBoard, { player, score: 10 }]
+            );
     }
 
     function endGame() {
