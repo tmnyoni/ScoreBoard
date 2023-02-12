@@ -3,8 +3,8 @@ import {
     SafeAreaView, Text,
     StyleSheet,
     View,
-    TextInput,
 } from "react-native";
+import { AddPlayerScoreInput } from "../components/AddScore";
 
 import type { Player } from "../components/Player";
 
@@ -44,7 +44,7 @@ export default function GameScreen({ navigation, route }) {
             setCurrentTurn(prevTurn => prevTurn + 1)
         }
 
-        const isPlayerAlreadyExists = isPlayerOnScoreBoard(player)
+        const isPlayerAlreadyExists = isPlayerOnScoreBoard(player);
         if (isPlayerAlreadyExists)
             setGameScoreBoard(prevBoard => [
                 ...prevBoard.filter(board => board.player.id !== player.id),
@@ -77,19 +77,19 @@ export default function GameScreen({ navigation, route }) {
                     Round {round}
                 </Text>
 
-                <Text style={{ textAlign: "center", fontSize: 16, marginVertical: 10, }}>
+                <Text style={{ textAlign: "center", fontSize: 18, marginVertical: 10, }}>
                     {players[currentTurn].name} Turn
                 </Text>
-                <TextInput
-                    keyboardType="numeric"
-                    placeholder="Enter score"
-                    style={styles.addPlayerScoreInput}
-                    onChangeText={setCurrentScore}
-                />
 
-                <Text onPress={() => endPlayerTurn(players[currentTurn])} style={styles.endTurnButton}>
+                <AddPlayerScoreInput submitPlayerScore={setCurrentScore}/>
+
+                <Text
+                    onPress={() => endPlayerTurn(players[currentTurn])}
+                    style={styles.endTurnButton}
+                >
                     End turn
                 </Text>
+
                 <Text onPress={endGame} style={styles.endGameButton}>
                     End Game
                 </Text>
