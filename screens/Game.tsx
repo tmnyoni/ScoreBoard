@@ -23,10 +23,6 @@ export default function GameScreen({ navigation, route }) {
         ).length > 0;
     }
 
-    // useEffect(()=>{
-    //     const playerOnBoard = isPlayerOnScoreBoard()
-    // })
-
     const [round, setRound] = useState<number>(1);
     function nextRound() {
         setRound(prevRound => prevRound + 1)

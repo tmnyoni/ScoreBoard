@@ -45,58 +45,72 @@ export default function HomeScreen({ navigation }) {
         <SafeAreaView style={styles.container}>
             <ExpoStatusBar style="auto" />
 
-            <Text style={styles.title}>
-                Add Players
-            </Text>
-
-            {noPlayerError && (
-                <View style={styles.errorContainer}>
-                    <Text style={styles.errorText}>
-                        {noPlayerError}
-                    </Text>
+            <View>
+                <Text style={styles.title}>
+                    Select game mode
+                </Text>
+                <View style={styles.tabBar}>
+                    <Text style={styles.tab}> Classic </Text>
+                    <Text style={[styles.tab, styles.activeTab]}> Tournament </Text>
                 </View>
-            )}
+            </View>
 
-            <ScrollView style={{ marginTop: 40 }}>
-                {players.map((player) => (
-                    <PlayerItem
-                        key={player.id}
-                        player={player}
-                        removePlayer={removePlayer}
-                    />
-                ))}
-            </ScrollView>
+            <View style={styles.playersContainer}>
+                <Text style={styles.title}> Players </Text>
 
-            <AddPlayerInput addPlayer={addPlayer} />
-            <Text style={styles.startButton} onPress={startGame}>
-                Start Game
-            </Text>
+                {noPlayerError && (
+                    <View style={styles.errorContainer}>
+                        <Text style={styles.errorText}>
+                            {noPlayerError}
+                        </Text>
+                    </View>
+                )}
 
+                <ScrollView>
+                    {players.map((player) => (
+                        <PlayerItem
+                            key={player.id}
+                            player={player}
+                            removePlayer={removePlayer}
+                        />
+                    ))}
+                </ScrollView>
+            </View>
+
+            <View style={styles.bottomView}>
+                <AddPlayerInput addPlayer={addPlayer} />
+                <Text style={styles.startButton} onPress={startGame}>
+                    Start Game
+                </Text>
+            </View>
         </SafeAreaView >
     );
 }
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 20,
-        textAlign: 'center',
-        fontWeight: "500",
-        marginTop: 80,
-    },
     container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        justifyContent: 'center',
+        width: '100%',
+        minHeight: "100%",
+        backgroundColor: '#FBFBFB',
         padding: 24,
+        fontSize: 16,
+        flex: 1,
+    },
+    playersContainer: {
+        marginTop: 40,
+    },
+    title: {
+        color: '#121212',
     },
     startButton: {
         marginTop: 24,
         marginBottom: 24,
-        borderRadius: 5,
-        backgroundColor: '#00a4a7',
-        padding: 10,
+        borderRadius: 8,
+        backgroundColor: '#33595C',
+        padding: 15,
         textAlign: 'center',
         color: '#fff',
+        width: '50%'
     },
     errorContainer: {
         borderWidth: 1,
@@ -109,5 +123,29 @@ const styles = StyleSheet.create({
     },
     errorText: {
         color: "red",
+    },
+    tabBar: {
+        marginTop: 4,
+        padding: 4,
+        backgroundColor: '#6FABB0',
+        borderRadius: 8,
+        flexDirection: 'row'
+    },
+    tab: {
+        padding: 8,
+        borderRadius: 4,
+        flex: 1,
+        color: "#FBFBFB",
+        textAlign: 'center'
+    },
+    activeTab: {
+        backgroundColor: '#FBFBFB',
+        color: '33595C',
+    },
+    bottomView: {
+        flex: 1,
+        alignItems: 'center',
+        position: 'relative',
+        marginTop: 50,
     }
 });
