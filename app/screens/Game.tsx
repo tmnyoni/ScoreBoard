@@ -25,6 +25,11 @@ export default function GameScreen({ navigation, route }) {
         ).length > 0;
     }
 
+    useEffect(() => {
+        setGameScoreBoard(gameScoreBoard.sort((a, b) => a.score - b.score));
+        console.log('sorting..')
+    }, [gameScoreBoard])
+
     const [round, setRound] = useState<number>(1);
     function nextRound() {
         setRound(prevRound => prevRound + 1)
@@ -73,35 +78,41 @@ export default function GameScreen({ navigation, route }) {
             <Text onPress={endGame} style={styles.endGameButton}>
                 End Game
             </Text>
+            <View style={{ marginTop: 30 }}>
+                <View style={{ alignItems: 'center' }}>
+                    <View style={{ width: 120, height: 120, borderWidth: 8, borderRadius: 120, justifyContent: 'center', alignItems: 'center', borderColor: '#6FABB0' }}>
+                        <Text style={{ fontWeight: '600', fontSize: 18, color: '#6FABB0' }}> 1 Min </Text>
+                    </View>
+                </View>
 
-            <View>
+                <Text style={styles.title}>
+                    Round {round}
+                </Text>
+
+                <Text style={{ textAlign: "center", fontSize: 28, marginVertical: 10, }}>
+                    {players[currentTurn].name}'s Turn
+                </Text>
+
+                <View style={{ alignItems: 'center', marginTop: 40 }}>
+                    <AddPlayerScoreInput submitPlayerScore={setCurrentScore} />
+                    <Text
+                        onPress={() => endPlayerTurn(players[currentTurn])}
+                        style={styles.endTurnButton}
+                    >
+                        End turn
+                    </Text>
+                </View>
+            </View>
+
+            <View style={{ marginTop: 40 }}>
                 <Text> Game Table </Text>
-                <ScrollView style={{ marginTop: 40 }}>
+                <ScrollView style={{ marginTop: 20 }}>
                     <TableHeaderRow />
                     {gameScoreBoard.map((scores, index) =>
                         <TableRow key={index} scores={scores} />
                     )}
                 </ScrollView>
             </View>
-
-            <Text style={styles.title}>
-                Round {round}
-            </Text>
-
-            <Text style={{ textAlign: "center", fontSize: 18, marginVertical: 10, }}>
-                {players[currentTurn].name} Turn
-            </Text>
-
-            <AddPlayerScoreInput submitPlayerScore={setCurrentScore} />
-
-            <Text
-                onPress={() => endPlayerTurn(players[currentTurn])}
-                style={styles.endTurnButton}
-            >
-                End turn
-            </Text>
-
-
         </SafeAreaView>
     )
 }
@@ -110,8 +121,8 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         textAlign: 'center',
-        fontWeight: "500",
-        marginTop: 80,
+        fontWeight: "900",
+        marginTop: 30,
     },
     container: {
         flex: 1,
@@ -126,8 +137,9 @@ const styles = StyleSheet.create({
     },
     endTurnButton: {
         textAlign: "center",
-        padding: 10,
-        backgroundColor: '#00a4a7',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        backgroundColor: '#33595C',
         borderRadius: 5,
         color: "white",
         fontWeight: "500",
@@ -135,8 +147,8 @@ const styles = StyleSheet.create({
     },
     endGameButton: {
         textAlign: "center",
-        padding: 10,
-        width: '40%',
+        paddingVertical: 8,
+        width: '30%',
         backgroundColor: '#df6883',
         borderRadius: 5,
         color: "white",
