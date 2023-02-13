@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
     SafeAreaView, Text,
     StyleSheet,
     View,
-    ScrollView
+    ScrollView,
+    Pressable
 } from "react-native";
 import { AddPlayerScoreInput } from "../components/AddScore";
 
 import type { Player } from "../components/Player";
 import { TableRow, TableHeaderRow } from "../components/table/TableRow";
+
+import MenuIcon from '../assets/menu.svg';
 
 export type ScoreBoard = {
     player: Player;
@@ -16,6 +19,18 @@ export type ScoreBoard = {
 }
 
 export default function GameScreen({ navigation, route }) {
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <Pressable onPress={() => navigation.navigate('Settings', {})}>
+                    <View style={styles.menuButton}>
+                        <MenuIcon width={30} height={30} color='#000' />
+                    </View>
+                </Pressable>
+            )
+        })
+    }, [navigation]);
+    
     const players: Player[] = route.params.players;
     const [gameScoreBoard, setGameScoreBoard] = useState<ScoreBoard[]>([]);
 
@@ -170,4 +185,8 @@ const styles = StyleSheet.create({
         fontWeight: 300,
         borderRadius: 5,
     },
+    menuButton: {
+        padding: 6,
+        borderRadius: 4,
+    }
 });
