@@ -1,33 +1,31 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Settings, Text, View, Pressable } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
-import { HomeScreen, GameScreen, ResultScreen } from './app/screens';
+import { SvgUri } from 'react-native-svg';
+import MenuIcon from './app/assets/menu.svg';
+
+import {
+  HomeScreen,
+  GameScreen,
+  ResultScreen,
+  SettingScreen
+} from './app/screens';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const navigation = useNavigation();
+
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           headerShadowVisible: false,
           headerStyle: { backgroundColor: '#FBFBFB' },
-          headerTitleAlign: 'center',
-          headerRight: () => (
-            <Text
-              style={{
-                paddingVertical: 8,
-                paddingHorizontal: 15,
-                backgroundColor: '#33595C',
-                color: '#FBFBFB',
-                borderRadius: 4
-              }}
-            >
-              Menu
-            </Text>
-          ),
+          headerTitleAlign: 'center'
         }}
       >
         <Stack.Screen
@@ -39,6 +37,7 @@ export default function App() {
         />
         <Stack.Screen name='Game' component={GameScreen} />
         <Stack.Screen name='Results' component={ResultScreen} />
+        <Stack.Screen name='Settings' component={SettingScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
