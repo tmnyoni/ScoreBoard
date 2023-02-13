@@ -10,17 +10,31 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor: '#FBFBFB' },
+          headerTitleAlign: 'center',
+          headerRight: () => (
+            <Text
+              style={{
+                paddingVertical: 8,
+                paddingHorizontal: 15,
+                backgroundColor: '#33595C',
+                color: '#FBFBFB',
+                borderRadius: 4
+              }}
+            >
+              Menu
+            </Text>
+          ),
+        }}
+      >
         <Stack.Screen
           name='Home'
           component={HomeScreen}
           options={{
             title: "New Match",
-            headerShadowVisible: false,
-            headerStyle: { backgroundColor: '#FBFBFB' },
-            headerRight: () => (
-              <Text> Menu </Text>
-            ),
           }}
         />
         <Stack.Screen name='Game' component={GameScreen} />

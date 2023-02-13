@@ -103,14 +103,13 @@ const styles = StyleSheet.create({
         color: '#121212',
     },
     startButton: {
-        marginTop: 24,
-        marginBottom: 24,
+        marginVertical: 24,
         borderRadius: 8,
         backgroundColor: '#33595C',
-        padding: 15,
+        paddingVertical: 15,
         textAlign: 'center',
         color: '#fff',
-        width: '50%'
+        width: '60%'
     },
     errorContainer: {
         borderWidth: 1,
