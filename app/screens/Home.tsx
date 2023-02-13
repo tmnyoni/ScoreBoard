@@ -143,9 +143,13 @@ const styles = StyleSheet.create({
         color: '33595C',
     },
     bottomView: {
-        flex: 1,
+        width: '100%',
+        backgroundColor: '#FBFBFB',
         alignItems: 'center',
-        position: 'relative',
-        marginTop: 50,
+        position: 'absolute',
+        bottom: 0,
+        paddingTop: 40,
+        margin: 'auto',
+        alignSelf: 'center'
     }
 });

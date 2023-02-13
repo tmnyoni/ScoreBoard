@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -13,7 +14,14 @@ export default function App() {
         <Stack.Screen
           name='Home'
           component={HomeScreen}
-          options={{ title: "New Match" }}
+          options={{
+            title: "New Match",
+            headerShadowVisible: false,
+            headerStyle: { backgroundColor: '#FBFBFB' },
+            headerRight: () => (
+              <Text> Menu </Text>
+            ),
+          }}
         />
         <Stack.Screen name='Game' component={GameScreen} />
         <Stack.Screen name='Results' component={ResultScreen} />
