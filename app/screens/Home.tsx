@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 
 import {
     StyleSheet,
@@ -10,11 +11,10 @@ import {
     StatusBar
 } from 'react-native';
 
+
 import type { Player } from '../components/Player';
 import { PlayerItem } from '../components/Player';
-
 import { AddPlayerInput } from '../components/AddPlayer';
-import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 
 export default function HomeScreen({ navigation }) {
     const [players, setPlayers] = useState<Player[]>([]);
