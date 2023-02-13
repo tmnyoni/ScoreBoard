@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 
 import {
@@ -9,17 +9,31 @@ import {
     ScrollView,
     SafeAreaView,
     StatusBar,
-    FlatList
+    FlatList,
+    Pressable
 } from 'react-native';
-
 
 import type { Player } from '../components/Player';
 import { PlayerItem } from '../components/Player';
 import { AddPlayerInput } from '../components/AddPlayer';
 
+import MenuIcon from '../assets/menu.svg';
+
 export default function HomeScreen({ navigation }) {
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <Pressable onPress={() => navigation.navigate('Settings', {})}>
+                    <View style={styles.menuButton}>
+                        <MenuIcon width={30} height={30} color='#000' />
+                    </View>
+                </Pressable>
+            )
+        })
+    }, [navigation]);
+
     const [players, setPlayers] = useState<Player[]>([]);
-    const [noPlayerError, setNoPlayerError] = useState<string>()
+    const [noPlayerError, setNoPlayerError] = useState<string>();
 
     function addPlayer(player: Player) {
         setNoPlayerError('');
@@ -73,7 +87,7 @@ export default function HomeScreen({ navigation }) {
 
                 <FlatList
                     data={players}
-                    renderItem={({item}) => (
+                    renderItem={({ item }) => (
                         <PlayerItem
                             key={item.id}
                             player={item}
@@ -157,5 +171,9 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         margin: 'auto',
         alignSelf: 'center'
+    },
+    menuButton: {
+        padding: 6,
+        borderRadius: 4,
     }
 });

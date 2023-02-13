@@ -1,11 +1,7 @@
+
 import React from 'react';
-import { Settings, Text, View, Pressable } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
-
-import { SvgUri } from 'react-native-svg';
-import MenuIcon from './app/assets/menu.svg';
 
 import {
   HomeScreen,
@@ -17,7 +13,6 @@ import {
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const navigation = useNavigation();
 
   return (
     <NavigationContainer>
