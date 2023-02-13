@@ -30,9 +30,18 @@ export default function GameScreen({ navigation, route }) {
             )
         })
     }, [navigation]);
-    
+
     const players: Player[] = route.params.players;
-    const [gameScoreBoard, setGameScoreBoard] = useState<ScoreBoard[]>([]);
+    const [gameScoreBoard, setGameScoreBoard] = useState<ScoreBoard[]>(initScoreBoard());
+
+
+    function initScoreBoard() {
+        const scoreBoard: ScoreBoard[] = [];
+        for (let i = 0; i < players.length; i++) {
+            scoreBoard.push({ player: players[i], score: 0 })
+        }
+        return scoreBoard;
+    }
 
     function isPlayerOnScoreBoard(player: Player) {
         return gameScoreBoard.filter(
@@ -42,7 +51,6 @@ export default function GameScreen({ navigation, route }) {
 
     useEffect(() => {
         setGameScoreBoard(gameScoreBoard.sort((a, b) => a.score - b.score));
-        console.log('sorting..')
     }, [gameScoreBoard])
 
     const [round, setRound] = useState<number>(1);
@@ -124,7 +132,7 @@ export default function GameScreen({ navigation, route }) {
                 <ScrollView style={{ marginTop: 20 }}>
                     <TableHeaderRow />
                     {gameScoreBoard.map((scores, index) =>
-                        <TableRow key={index} scores={scores} />
+                        <TableRow key={index} index={index + 1} scores={scores} />
                     )}
                 </ScrollView>
             </View>

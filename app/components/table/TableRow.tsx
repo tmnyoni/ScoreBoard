@@ -6,11 +6,11 @@ export type ScoreBoard = {
     score: number,
 }
 
-export function TableRow(props: { scores: ScoreBoard }) {
-    const { scores } = props;
+export function TableRow(props: { index: number, scores: ScoreBoard }) {
+    const { index, scores } = props;
     return (
         <View style={{ flex: 1, alignSelf: 'stretch', flexDirection: 'row', paddingVertical: 6 }}>
-            <Text style={{ flex: 1, alignSelf: 'stretch' }}> 1 </Text>
+            <Text style={{ flex: 1, alignSelf: 'stretch' }}> {index}</Text>
             <Text style={{ flex: 3, alignSelf: 'stretch' }}> {scores.player.name} </Text>
             <Text style={{ flex: 1, alignSelf: 'stretch', textAlign: 'right' }}> {scores.score} </Text>
         </View>
