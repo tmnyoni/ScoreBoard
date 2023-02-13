@@ -8,7 +8,8 @@ import {
     Button,
     ScrollView,
     SafeAreaView,
-    StatusBar
+    StatusBar,
+    FlatList
 } from 'react-native';
 
 
@@ -50,8 +51,12 @@ export default function HomeScreen({ navigation }) {
                     Select game mode
                 </Text>
                 <View style={styles.tabBar}>
-                    <Text style={styles.tab}> Classic </Text>
-                    <Text style={[styles.tab, styles.activeTab]}> Tournament </Text>
+                    <Text style={styles.tab}>
+                        Classic
+                    </Text>
+                    <Text style={[styles.tab, styles.activeTab]}>
+                        Tournament
+                    </Text>
                 </View>
             </View>
 
@@ -66,15 +71,17 @@ export default function HomeScreen({ navigation }) {
                     </View>
                 )}
 
-                <ScrollView>
-                    {players.map((player) => (
+                <FlatList
+                    data={players}
+                    renderItem={({item}) => (
                         <PlayerItem
-                            key={player.id}
-                            player={player}
+                            key={item.id}
+                            player={item}
                             removePlayer={removePlayer}
                         />
-                    ))}
-                </ScrollView>
+                    )}
+                    keyExtractor={player => player.id}
+                />
             </View>
 
             <View style={styles.bottomView}>
