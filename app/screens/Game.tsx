@@ -3,10 +3,12 @@ import {
     SafeAreaView, Text,
     StyleSheet,
     View,
+    ScrollView
 } from "react-native";
 import { AddPlayerScoreInput } from "../components/AddScore";
 
 import type { Player } from "../components/Player";
+import { TableRow, TableHeaderRow } from "../components/table/TableRow";
 
 export type ScoreBoard = {
     player: Player;
@@ -68,28 +70,38 @@ export default function GameScreen({ navigation, route }) {
 
     return (
         <SafeAreaView style={styles.container}>
+            <Text onPress={endGame} style={styles.endGameButton}>
+                End Game
+            </Text>
+
             <View>
-                <Text style={styles.title}>
-                    Round {round}
-                </Text>
-
-                <Text style={{ textAlign: "center", fontSize: 18, marginVertical: 10, }}>
-                    {players[currentTurn].name} Turn
-                </Text>
-
-                <AddPlayerScoreInput submitPlayerScore={setCurrentScore}/>
-
-                <Text
-                    onPress={() => endPlayerTurn(players[currentTurn])}
-                    style={styles.endTurnButton}
-                >
-                    End turn
-                </Text>
-
-                <Text onPress={endGame} style={styles.endGameButton}>
-                    End Game
-                </Text>
+                <Text> Game Table </Text>
+                <ScrollView style={{ marginTop: 40 }}>
+                    <TableHeaderRow />
+                    {gameScoreBoard.map((scores, index) =>
+                        <TableRow key={index} scores={scores} />
+                    )}
+                </ScrollView>
             </View>
+
+            <Text style={styles.title}>
+                Round {round}
+            </Text>
+
+            <Text style={{ textAlign: "center", fontSize: 18, marginVertical: 10, }}>
+                {players[currentTurn].name} Turn
+            </Text>
+
+            <AddPlayerScoreInput submitPlayerScore={setCurrentScore} />
+
+            <Text
+                onPress={() => endPlayerTurn(players[currentTurn])}
+                style={styles.endTurnButton}
+            >
+                End turn
+            </Text>
+
+
         </SafeAreaView>
     )
 }
@@ -103,8 +115,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        justifyContent: 'center',
+        backgroundColor: '#FBFBFB',
         padding: 24,
     },
     addPlayerScoreInput: {
@@ -125,10 +136,26 @@ const styles = StyleSheet.create({
     endGameButton: {
         textAlign: "center",
         padding: 10,
+        width: '40%',
         backgroundColor: '#df6883',
         borderRadius: 5,
         color: "white",
         fontWeight: "500",
-        marginTop: 100,
-    }
+        alignSelf: 'flex-end'
+    },
+    gameTableContainer: {
+        marginTop: 20,
+    },
+    playerView: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyItems: 'between',
+        borderWidth: 1,
+        borderColor: '#ebf3e5',
+        marginTop: 8,
+        padding: 10,
+        fontWeight: 300,
+        borderRadius: 5,
+    },
 });
