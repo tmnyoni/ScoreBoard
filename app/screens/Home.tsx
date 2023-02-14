@@ -10,7 +10,8 @@ import {
     SafeAreaView,
     StatusBar,
     FlatList,
-    Pressable
+    Pressable,
+    ToastAndroid
 } from 'react-native';
 
 import type { Player } from '../components/Player';
@@ -53,8 +54,18 @@ export default function HomeScreen({ navigation }) {
         if (players.length > 0)
             navigation.navigate("Game", { players });
         else
-            setNoPlayerError('You haven\'t added players');
+        showToastWithGravityAndOffset('You haven\'t added players');
     }
+
+    function showToastWithGravityAndOffset(message: string) {
+        ToastAndroid.showWithGravityAndOffset(
+           message,
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+            25,
+            50,
+        );
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -103,6 +114,8 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.startButton} onPress={startGame}>
                     Start Game
                 </Text>
+
+
             </View>
         </SafeAreaView >
     );
