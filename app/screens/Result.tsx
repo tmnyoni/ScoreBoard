@@ -1,13 +1,30 @@
+import React, { useLayoutEffect } from "react";
 import {
     View,
     SafeAreaView,
     Text,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    Pressable
 } from "react-native";
+import { TableHeaderRow, TableRow } from "../components/table/TableRow";
 import type { ScoreBoard } from './Game';
 
+import { MenuIcon } from '../components/icons';
+
 export default function ResultScreen({ navigation, route }) {
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <Pressable onPress={() => navigation.navigate('Settings', {})}>
+                    <View style={styles.menuButton}>
+                        <MenuIcon />
+                    </View>
+                </Pressable>
+            )
+        })
+    }, [navigation]);
+
     const scoreBoard: ScoreBoard[] = route.params.gameScoreBoard;
 
     function onRestart() {
@@ -20,18 +37,22 @@ export default function ResultScreen({ navigation, route }) {
     return (
         <SafeAreaView style={styles.container}>
             <View>
-                <Text style={styles.title}> Game over! </Text>
-                <ScrollView style={{ marginTop: 40 }}>
-                    {scoreBoard.map((scores, index) =>
-                        <View key={index} style={styles.playerView}>
-                            <Text> {scores.player.name} </Text>
-                            <Text> {scores.score} </Text>
-                        </View>
-                    )}
-                </ScrollView>
-                <Text onPress={onRestart} style={styles.resetGameButton}>
-                    Restart game
-                </Text>
+                <View style={{ marginTop: 0 }}>
+                    <Text> Game Table </Text>
+                    <ScrollView style={{ marginTop: 20 }}>
+                        <TableHeaderRow />
+                        {scoreBoard.map((scores, index) =>
+                            <TableRow key={index} index={index + 1} scores={scores} />
+                        )}
+                    </ScrollView>
+                </View>
+
+                <View>
+                    <Text style={styles.title}> Game over! </Text>
+                    <Text onPress={onRestart} style={styles.resetGameButton}>
+                        Restart game
+                    </Text>
+                </View>
             </View>
         </SafeAreaView>
     )
@@ -70,5 +91,9 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "500",
         marginTop: 100,
+    },
+    menuButton: {
+        padding: 6,
+        borderRadius: 4,
     }
 });
