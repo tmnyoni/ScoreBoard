@@ -67,8 +67,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        justifyContent: 'center',
+        backgroundColor: '#FBFBFB',
         padding: 24,
     },
     playerView: {
@@ -85,12 +84,14 @@ const styles = StyleSheet.create({
     },
     resetGameButton: {
         textAlign: "center",
-        padding: 10,
+        paddingVertical: 15,
+        width: '80%',
         backgroundColor: '#df6883',
         borderRadius: 5,
         color: "white",
         fontWeight: "500",
-        marginTop: 100,
+        marginTop: 50,
+        alignSelf: 'center'
     },
     menuButton: {
         padding: 6,
