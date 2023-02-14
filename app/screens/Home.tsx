@@ -34,11 +34,8 @@ export default function HomeScreen({ navigation }) {
     }, [navigation]);
 
     const [players, setPlayers] = useState<Player[]>([]);
-    const [noPlayerError, setNoPlayerError] = useState<string>();
 
     function addPlayer(player: Player) {
-        setNoPlayerError('');
-
         setPlayers(
             (prevPlayers) => [...prevPlayers, player]
         );
@@ -54,12 +51,12 @@ export default function HomeScreen({ navigation }) {
         if (players.length > 0)
             navigation.navigate("Game", { players });
         else
-        showToastWithGravityAndOffset('You haven\'t added players');
+            showToastWithGravityAndOffset('You haven\'t added players');
     }
 
     function showToastWithGravityAndOffset(message: string) {
         ToastAndroid.showWithGravityAndOffset(
-           message,
+            message,
             ToastAndroid.SHORT,
             ToastAndroid.BOTTOM,
             25,
@@ -87,15 +84,6 @@ export default function HomeScreen({ navigation }) {
 
             <View style={styles.playersContainer}>
                 <Text style={styles.title}> Players </Text>
-
-                {noPlayerError && (
-                    <View style={styles.errorContainer}>
-                        <Text style={styles.errorText}>
-                            {noPlayerError}
-                        </Text>
-                    </View>
-                )}
-
                 <FlatList
                     data={players}
                     renderItem={({ item }) => (
@@ -109,13 +97,15 @@ export default function HomeScreen({ navigation }) {
                 />
             </View>
 
-            <View style={styles.bottomView}>
-                <AddPlayerInput addPlayer={addPlayer} />
-                <Text style={styles.startButton} onPress={startGame}>
-                    Start Game
-                </Text>
-
-
+            <View style={styles.bottomViewContainer}>
+                <View style={styles.bottomView}>
+                    <AddPlayerInput addPlayer={addPlayer} />
+                    <Pressable onPress={startGame}>
+                        <Text style={styles.startButton} onPress={startGame}>
+                            Start Game
+                        </Text>
+                    </Pressable>
+                </View>
             </View>
         </SafeAreaView >
     );
@@ -143,7 +133,7 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         textAlign: 'center',
         color: '#fff',
-        width: '60%'
+        paddingHorizontal: 50,
     },
     errorContainer: {
         borderWidth: 1,
@@ -175,15 +165,22 @@ const styles = StyleSheet.create({
         backgroundColor: '#FBFBFB',
         color: '33595C',
     },
-    bottomView: {
-        width: '100%',
+    bottomViewContainer: {
         backgroundColor: '#FBFBFB',
         alignItems: 'center',
         position: 'absolute',
         bottom: 0,
+        left: 0,
+        right: 0,
         paddingTop: 40,
-        margin: 'auto',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        borderTopWidth: 1,
+        borderColor: '#f6f6f6',
+        shadowColor: '#0001'
+    },
+    bottomView: {
+        padding: 24,
+        width: '100%',
     },
     menuButton: {
         padding: 6,
