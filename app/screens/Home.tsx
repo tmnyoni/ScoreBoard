@@ -36,10 +36,10 @@ export default function HomeScreen({ navigation }) {
     }, [navigation]);
 
     const [gameType, setGameType] = useState<GameType>('Classic');
-    function toggleGameType() {
-        gameType === 'Classic'
-            ? setGameType('Tournament')
-            : setGameType('Classic')
+    function toggleGameType(currentGametype: GameType) {
+        currentGametype === 'Classic'
+            ? setGameType('Classic')
+            : setGameType('Tournament')
     }
 
     const [players, setPlayers] = useState<Player[]>([]);
@@ -72,7 +72,7 @@ export default function HomeScreen({ navigation }) {
             return;
         }
 
-        navigation.navigate("Game", { players });
+        navigation.navigate("Game", { players, gameType });
     }
 
     return (
@@ -85,7 +85,7 @@ export default function HomeScreen({ navigation }) {
                 </Text>
                 <View style={styles.gameTypeTabbar}>
                     <Pressable
-                        onPress={toggleGameType}
+                        onPress={() => toggleGameType('Classic')}
                         style={[{ flex: 1, borderRadius: 4, justifyContent: 'center', paddingVertical: 10 },
                         gameType === 'Classic' && { backgroundColor: '#FBFBFB' }]}
                     >
@@ -94,7 +94,7 @@ export default function HomeScreen({ navigation }) {
                         </Text>
                     </Pressable>
                     <Pressable
-                        onPress={toggleGameType}
+                        onPress={() => toggleGameType('Tournament')}
                         style={[{ flex: 1, justifyContent: 'center', borderRadius: 4, },
                         gameType === 'Tournament' && { backgroundColor: '#FBFBFB' }]}
                     >
