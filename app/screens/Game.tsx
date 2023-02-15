@@ -95,7 +95,7 @@ export default function GameScreen({ navigation, route }) {
     const [seconds, setSeconds] = useState(60);
     const timerId = useRef<ReturnType<typeof setInterval>>(null);
     function startTimer() {
-        if (seconds)
+        if (!seconds)
             setSeconds(60)
 
         timerId.current = setInterval(() => {
@@ -109,7 +109,7 @@ export default function GameScreen({ navigation, route }) {
             clearInterval(timerId.current);
         }
 
-        setProgress(seconds / 100)
+        setProgress((seconds / 60))
     }, [seconds])
 
     function stopTimer() {
@@ -120,6 +120,18 @@ export default function GameScreen({ navigation, route }) {
     function resetTimer() {
         stopTimer();
         setSeconds(60);
+    }
+
+    function formatProgress(progress: number) {
+        const minutes = Math.floor(progress);
+
+        let seconds_ = Math.round((progress * 60) % 60);
+        let secondsAsString: string;
+        if (seconds_.toString().length < 2){
+            secondsAsString = '0' + seconds_.toString();
+        }
+
+        return `${minutes}:${secondsAsString ?? seconds_}`
     }
 
     const [progress, setProgress] = useState<number>(0);
@@ -140,6 +152,8 @@ export default function GameScreen({ navigation, route }) {
                         size={110}
                         borderWidth={1}
                         progress={progress}
+                        showsText={true}
+                        formatText={formatProgress}
                     />
                     <View style={{ flexDirection: 'row', marginTop: 4 }}>
                         <Button title='Start' onPress={startTimer} />
