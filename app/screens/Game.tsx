@@ -92,9 +92,6 @@ export default function GameScreen({ navigation, route }) {
         navigation.navigate("Results", { gameScoreBoard });
     }
 
-    const [isTimerStarted, setIsTimerStarted] = useState(false);
-    const [isTimerPaused, setIsTimerPaused] = useState(false);
-
     const [seconds, setSeconds] = useState(60);
     const timerId = useRef<ReturnType<typeof setInterval>>(null);
     function startTimer() {
@@ -113,7 +110,7 @@ export default function GameScreen({ navigation, route }) {
         }
 
         setProgress((seconds / 60))
-    }, [seconds])
+    }, [seconds]);
 
     function stopTimer() {
         clearInterval(timerId.current);
@@ -160,11 +157,11 @@ export default function GameScreen({ navigation, route }) {
                             showsText={true}
                             formatText={formatProgress}
                             color={'#33595C'}
+                            thickness={8}
                         />
                         <View style={{ flexDirection: 'row', marginTop: 4 }}>
                             <Pressable onPress={startTimer}
                                 style={[styles.endTurnButton, { margin: 1 }]}
-                                disabled={!isTimerStarted}
                             >
                                 <Text style={{ color: "#fbfbfb", }}>
                                     Start
@@ -178,12 +175,12 @@ export default function GameScreen({ navigation, route }) {
                                     Stop
                                 </Text>
                             </Pressable>
-                            <Pressable 
-                            onPress={resetTimer}
-                             style={[styles.endTurnButton, { margin: 1 }]}
-                             >
+                            <Pressable
+                                onPress={resetTimer}
+                                style={[styles.endTurnButton, { margin: 1 }]}
+                            >
                                 <Text style={{ color: "#fbfbfb", }}>
-                                     Reset </Text>
+                                    Reset </Text>
                             </Pressable>
                         </View>
                     </View>}

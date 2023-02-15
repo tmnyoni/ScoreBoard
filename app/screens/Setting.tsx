@@ -23,7 +23,7 @@ export default function SettingScreen({ navigation }) {
                 </Text>
 
                 <View style={styles.version}>
-                    <Text> 0.1.0  </Text>
+                    <Text> 0.2.0  </Text>
                     <Text style={styles.versionTag}> Beta  </Text>
                 </View>
             </View>
