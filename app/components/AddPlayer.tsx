@@ -1,11 +1,7 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, TextInput } from 'react-native';
+import { generateId } from '../lib/utils';
 import type { Player } from './Player';
-
-import { v4 as uuidv4 } from 'uuid';
-export function generateId() {
-    return uuidv4();
-}
 
 export type Props = {
     addPlayer: (player: Player) => void;
@@ -15,14 +11,16 @@ export function AddPlayerInput(props: Props) {
     const { addPlayer } = props;
 
     const id = generateId();
-    const [name, setName] = useState<string>();
+    const [name, setName] = useState<string>(null);
 
     function onSubmitInput() {
         addPlayer({ id, name });
+        setName(null);
     }
 
     return (
         <TextInput
+            value={name}
             placeholder="Enter player name"
             style={styles.addPlayerInput}
             onChangeText={setName}
