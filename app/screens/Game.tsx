@@ -18,6 +18,7 @@ import { TableRow, TableHeaderRow } from "../components/table/TableRow";
 import MenuIcon from '../assets/menu.svg';
 import { showToastWithGravityAndOffset } from "../components/Toast";
 import { GameType } from "./Home";
+import { MINUTE } from "../lib/timer";
 
 export type ScoreBoard = {
     player: Player;
@@ -83,20 +84,22 @@ export default function GameScreen({ navigation, route }) {
             setCurrentTurn(0) //reset the turns.
             nextRound();
         }
+
+        setCurrentScore(null);
     }
 
-    const [currentScore, setCurrentScore] = useState<string>('');
+    const [currentScore, setCurrentScore] = useState<string>(null);
 
     function endGame() {
         clearInterval(timerId.current);
         navigation.navigate("Results", { gameScoreBoard });
     }
 
-    const [seconds, setSeconds] = useState(60);
+    const [seconds, setSeconds] = useState(MINUTE);
     const timerId = useRef<ReturnType<typeof setInterval>>(null);
     function startTimer() {
         if (!seconds)
-            setSeconds(60)
+            setSeconds(MINUTE)
 
         timerId.current = setInterval(() => {
             setSeconds(prev => prev - 1)
@@ -109,7 +112,7 @@ export default function GameScreen({ navigation, route }) {
             clearInterval(timerId.current);
         }
 
-        setProgress((seconds / 60))
+        setProgress((seconds / MINUTE))
     }, [seconds]);
 
     function stopTimer() {
@@ -119,13 +122,13 @@ export default function GameScreen({ navigation, route }) {
 
     function resetTimer() {
         stopTimer();
-        setSeconds(60);
+        setSeconds(MINUTE);
     }
 
     function formatProgress(progress: number) {
         const minutes = Math.floor(progress);
 
-        let seconds_ = Math.round((progress * 60) % 60);
+        let seconds_ = Math.round((progress * MINUTE) % MINUTE);
         let secondsAsString: string;
         if (seconds_.toString().length < 2) {
             secondsAsString = '0' + seconds_.toString();
@@ -138,9 +141,13 @@ export default function GameScreen({ navigation, route }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text onPress={endGame} style={styles.endGameButton}>
+            <Text
+                onPress={endGame}
+                style={styles.endGameButton}
+            >
                 End Game
             </Text>
+
             <View style={{ marginTop: 30 }}>
                 {gameType === 'Tournament' &&
                     <View style={{ alignItems: 'center' }}>
@@ -194,7 +201,10 @@ export default function GameScreen({ navigation, route }) {
                 </Text>
 
                 <View style={{ alignItems: 'center', marginTop: 40 }}>
-                    <AddPlayerScoreInput submitPlayerScore={setCurrentScore} />
+                    <AddPlayerScoreInput
+                        updateCurrentScore={setCurrentScore}
+                        currentScore={currentScore}
+                    />
                     <Text
                         onPress={() => endPlayerTurn(players[currentTurn])}
                         style={styles.endTurnButton}
