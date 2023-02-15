@@ -58,7 +58,7 @@ export default function HomeScreen({ navigation }) {
     }
 
     function checkIfPlayerNameIsNotTaken(playerName: string) {
-        return players.some(player => player.name === playerName);
+        return players.some(player => player.name.trim() === playerName.trim());
     }
 
     function removePlayer(playerId: string) {
@@ -68,7 +68,7 @@ export default function HomeScreen({ navigation }) {
     }
 
     function startGame() {
-        if (players.length < 1) {
+        if (players.length < 2) {
             showToastWithGravityAndOffset('You need 2 or more players');
             return;
         }
