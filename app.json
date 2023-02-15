@@ -24,10 +24,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.tmnyoni.ScoreBoard"
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "17a3e327-4016-4aae-a0a9-535fa4c1806a"
+      }
     }
   }
 }
