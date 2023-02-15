@@ -19,8 +19,9 @@ import { AddPlayerInput } from '../components/AddPlayer';
 
 import MenuIcon from '../assets/menu.svg';
 import { showToastWithGravityAndOffset } from '../components/Toast';
+import { ExclamationCircle } from '../components/icons';
 
-type GameType = 'Classic' | 'Tournament';
+export type GameType = 'Classic' | 'Tournament';
 
 export default function HomeScreen({ navigation }) {
     useLayoutEffect(() => {
@@ -103,6 +104,24 @@ export default function HomeScreen({ navigation }) {
                         </Text>
                     </Pressable>
                 </View>
+
+                <View style={{flexDirection: 'row', alignItems: 'center', paddingVertical: 5}}>
+                    <ExclamationCircle />
+                    {gameType === 'Classic' &&
+                        <Text style={styles.tabNote}>
+                            The classic mode doesn&apos;t have a timer. Each player make
+                            their move as soon as they are ready to play. For faster game player
+                            it better to use Tournament mode.
+                        </Text>
+                    }
+
+                    {gameType === 'Tournament' &&
+                        <Text style={styles.tabNote}>
+                            Tournament mode uses a timer, set to 1 min by default,
+                            each player have to make their move, if they fail they should get a zero
+                            or given a penalty depending on your arrangement.
+                        </Text>}
+                </View>
             </View>
 
             <View style={styles.playersContainer}>
@@ -144,7 +163,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     playersContainer: {
-        marginTop: 40,
+        marginTop: 30,
     },
     title: {
         color: '#121212',
@@ -194,6 +213,14 @@ const styles = StyleSheet.create({
     },
     activeTab: {
         backgroundColor: '#FBFBFB',
+    },
+    tabNote: {
+        fontSize: 12,
+        color: 'gray',
+        lineHeight: 15,
+        flexDirection: 'row',
+        flex: 1,
+        marginLeft: 2,
     },
     bottomViewContainer: {
         backgroundColor: '#FBFBFB',

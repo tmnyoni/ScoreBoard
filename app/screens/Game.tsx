@@ -13,6 +13,7 @@ import { TableRow, TableHeaderRow } from "../components/table/TableRow";
 
 import MenuIcon from '../assets/menu.svg';
 import { showToastWithGravityAndOffset } from "../components/Toast";
+import { GameType } from "./Home";
 
 export type ScoreBoard = {
     player: Player;
@@ -21,6 +22,7 @@ export type ScoreBoard = {
 
 export default function GameScreen({ navigation, route }) {
     const players: Player[] = route.params.players;
+    const gameType: GameType = route.params.gameType;
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -85,17 +87,21 @@ export default function GameScreen({ navigation, route }) {
         navigation.navigate("Results", { gameScoreBoard });
     }
 
+    const [time, setTime] = useState(60);
+
     return (
         <SafeAreaView style={styles.container}>
             <Text onPress={endGame} style={styles.endGameButton}>
                 End Game
             </Text>
             <View style={{ marginTop: 30 }}>
-                <View style={{ alignItems: 'center' }}>
+                {gameType === 'Tournament' && <View style={{ alignItems: 'center' }}>
                     <View style={{ width: 120, height: 120, borderWidth: 8, borderRadius: 120, justifyContent: 'center', alignItems: 'center', borderColor: '#6FABB0' }}>
-                        <Text style={{ fontWeight: '600', fontSize: 18, color: '#6FABB0' }}> 1 Min </Text>
+                        <Text style={{ fontWeight: '600', fontSize: 18, color: '#6FABB0' }}>
+                            00:{time}
+                        </Text>
                     </View>
-                </View>
+                </View>}
 
                 <Text style={styles.title}>
                     Round {round}
