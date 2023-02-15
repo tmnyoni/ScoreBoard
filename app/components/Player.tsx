@@ -2,9 +2,6 @@ import {
     StyleSheet,
     Text,
     View,
-    TextInput,
-    Button,
-    ScrollView,
     Pressable,
 } from 'react-native';
 import { TrashIcon } from './icons';

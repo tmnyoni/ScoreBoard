@@ -1,11 +1,15 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
     SafeAreaView, Text,
     StyleSheet,
     View,
     ScrollView,
-    Pressable
+    Pressable,
+    Button
 } from "react-native";
+
+import * as Progress from 'react-native-progress';
+
 import { AddPlayerScoreInput } from "../components/AddScore";
 
 import type { Player } from "../components/Player";
@@ -84,10 +88,41 @@ export default function GameScreen({ navigation, route }) {
     const [currentScore, setCurrentScore] = useState<string>('');
 
     function endGame() {
+        clearInterval(timerId.current);
         navigation.navigate("Results", { gameScoreBoard });
     }
 
-    const [time, setTime] = useState(60);
+    const [seconds, setSeconds] = useState(60);
+    const timerId = useRef<ReturnType<typeof setInterval>>(null);
+    function startTimer() {
+        if (seconds)
+            setSeconds(60)
+
+        timerId.current = setInterval(() => {
+            setSeconds(prev => prev - 1)
+        }, 1000)
+    }
+
+    useEffect(() => {
+        if (!seconds) {
+            stopTimer();
+            clearInterval(timerId.current);
+        }
+
+        setProgress(seconds / 100)
+    }, [seconds])
+
+    function stopTimer() {
+        clearInterval(timerId.current);
+        timerId.current = null;
+    }
+
+    function resetTimer() {
+        stopTimer();
+        setSeconds(60);
+    }
+
+    const [progress, setProgress] = useState<number>(0);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -98,8 +133,18 @@ export default function GameScreen({ navigation, route }) {
                 {gameType === 'Tournament' && <View style={{ alignItems: 'center' }}>
                     <View style={{ width: 120, height: 120, borderWidth: 8, borderRadius: 120, justifyContent: 'center', alignItems: 'center', borderColor: '#6FABB0' }}>
                         <Text style={{ fontWeight: '600', fontSize: 18, color: '#6FABB0' }}>
-                            00:{time}
+                            00:{seconds}
                         </Text>
+                    </View>
+                    <Progress.Circle
+                        size={110}
+                        borderWidth={1}
+                        progress={progress}
+                    />
+                    <View style={{ flexDirection: 'row', marginTop: 4 }}>
+                        <Button title='Start' onPress={startTimer} />
+                        <Button title='Stop' onPress={stopTimer} />
+                        <Button title='Reset' onPress={resetTimer} />
                     </View>
                 </View>}
 
