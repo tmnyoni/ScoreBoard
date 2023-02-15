@@ -11,7 +11,6 @@ import {
     StatusBar,
     FlatList,
     Pressable,
-    ToastAndroid
 } from 'react-native';
 
 import type { Player } from '../components/Player';
@@ -19,6 +18,7 @@ import { PlayerItem } from '../components/Player';
 import { AddPlayerInput } from '../components/AddPlayer';
 
 import MenuIcon from '../assets/menu.svg';
+import { showToastWithGravityAndOffset } from '../components/Toast';
 
 export default function HomeScreen({ navigation }) {
     useLayoutEffect(() => {
@@ -66,16 +66,6 @@ export default function HomeScreen({ navigation }) {
 
         navigation.navigate("Game", { players });
     }
-
-    function showToastWithGravityAndOffset(message: string) {
-        ToastAndroid.showWithGravityAndOffset(
-            message,
-            ToastAndroid.SHORT,
-            ToastAndroid.BOTTOM,
-            25,
-            50,
-        );
-    };
 
     return (
         <SafeAreaView style={styles.container}>
