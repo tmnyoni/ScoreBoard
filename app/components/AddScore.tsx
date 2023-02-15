@@ -3,18 +3,20 @@ import { StyleSheet, Text, View, TextInput } from 'react-native';
 import type { Player } from './Player';
 
 type Props = {
-    submitPlayerScore: (score: string) => void;
+    updateCurrentScore: (score: string) => void;
+    currentScore: string;
 };
 
 export function AddPlayerScoreInput(props: Props) {
-    const { submitPlayerScore } = props;
+    const { updateCurrentScore, currentScore } = props;
 
     return (
         <TextInput
+            value={currentScore}
             keyboardType="numeric"
             placeholder="Enter score"
             style={styles.addPlayerScoreInput}
-            onChangeText={submitPlayerScore}
+            onChangeText={updateCurrentScore}
         />
     );
 }
