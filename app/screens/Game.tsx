@@ -12,6 +12,7 @@ import type { Player } from "../components/Player";
 import { TableRow, TableHeaderRow } from "../components/table/TableRow";
 
 import MenuIcon from '../assets/menu.svg';
+import { showToastWithGravityAndOffset } from "../components/Toast";
 
 export type ScoreBoard = {
     player: Player;
@@ -19,6 +20,8 @@ export type ScoreBoard = {
 }
 
 export default function GameScreen({ navigation, route }) {
+    const players: Player[] = route.params.players;
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
@@ -31,10 +34,7 @@ export default function GameScreen({ navigation, route }) {
         })
     }, [navigation]);
 
-    const players: Player[] = route.params.players;
     const [gameScoreBoard, setGameScoreBoard] = useState<ScoreBoard[]>(initScoreBoard());
-
-
     function initScoreBoard() {
         const scoreBoard: ScoreBoard[] = [];
         for (let i = 0; i < players.length; i++) {
@@ -43,16 +43,6 @@ export default function GameScreen({ navigation, route }) {
         return scoreBoard;
     }
 
-    function isPlayerOnScoreBoard(player: Player) {
-        return gameScoreBoard.filter(
-            boardItem => boardItem.player.id === player.id
-        ).length > 0;
-    }
-
-    useEffect(() => {
-        setGameScoreBoard(gameScoreBoard.sort((a, b) => a.score - b.score));
-    }, [gameScoreBoard])
-
     const [round, setRound] = useState<number>(1);
     function nextRound() {
         setRound(prevRound => prevRound + 1)
@@ -60,34 +50,33 @@ export default function GameScreen({ navigation, route }) {
 
     const [currentTurn, setCurrentTurn] = useState<number>(0);
     function endPlayerTurn(player: Player) {
+        if (!currentScore) {
+            showToastWithGravityAndOffset('You have not entered player score');
+            return;
+        }
+
+        setGameScoreBoard(prevBoard => {
+            const playersList = [...prevBoard.filter(board => board.player.id !== player.id)];
+            const newPlayer = {
+                player,
+                score: prevBoard.filter(item =>
+                    item.player.id === player.id)[0].score + (currentScore
+                        ? parseInt(currentScore)
+                        : 0)
+            }
+            playersList.push(newPlayer);
+
+            return playersList.sort((a, b) => b.score - a.score);
+        });
+
+        if (currentTurn < players.length - 1)
+            setCurrentTurn(prevTurn => prevTurn + 1)
+
         // Exchange turns.
-        if (currentTurn == players.length - 1) {
+        else if (currentTurn == players.length - 1) {
             setCurrentTurn(0) //reset the turns.
             nextRound();
         }
-
-        if (currentTurn < players.length - 1) {
-            setCurrentTurn(prevTurn => prevTurn + 1)
-        }
-
-        const isPlayerAlreadyExists = isPlayerOnScoreBoard(player);
-        if (isPlayerAlreadyExists)
-            setGameScoreBoard(prevBoard => [
-                ...prevBoard.filter(board => board.player.id !== player.id),
-                {
-                    player,
-                    score: prevBoard.filter(item =>
-                        item.player.id === player.id)[0].score + parseInt(currentScore)
-                }
-            ]);
-        else
-            setGameScoreBoard(prevBoard => [
-                ...prevBoard,
-                {
-                    player,
-                    score: parseInt(currentScore)
-                }
-            ]);
     }
 
     const [currentScore, setCurrentScore] = useState<string>('');
