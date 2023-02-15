@@ -20,6 +20,8 @@ import { AddPlayerInput } from '../components/AddPlayer';
 import MenuIcon from '../assets/menu.svg';
 import { showToastWithGravityAndOffset } from '../components/Toast';
 
+type GameType = 'Classic' | 'Tournament';
+
 export default function HomeScreen({ navigation }) {
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -33,8 +35,14 @@ export default function HomeScreen({ navigation }) {
         })
     }, [navigation]);
 
-    const [players, setPlayers] = useState<Player[]>([]);
+    const [gameType, setGameType] = useState<GameType>('Classic');
+    function toggleGameType() {
+        gameType === 'Classic'
+            ? setGameType('Tournament')
+            : setGameType('Classic')
+    }
 
+    const [players, setPlayers] = useState<Player[]>([]);
     function addPlayer(player: Player) {
         const isPlayerNameTaken = checkIfPlayerNameIsNotTaken(player.name);
 
@@ -75,13 +83,25 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.title}>
                     Select game mode
                 </Text>
-                <View style={styles.tabBar}>
-                    <Text style={styles.tab}>
-                        Classic
-                    </Text>
-                    <Text style={[styles.tab, styles.activeTab]}>
-                        Tournament
-                    </Text>
+                <View style={styles.gameTypeTabbar}>
+                    <Pressable
+                        onPress={toggleGameType}
+                        style={[{ flex: 1, borderRadius: 4, justifyContent: 'center', paddingVertical: 10 },
+                        gameType === 'Classic' && { backgroundColor: '#FBFBFB' }]}
+                    >
+                        <Text style={{ textAlign: 'center', color: '#121212' }}>
+                            Classic
+                        </Text>
+                    </Pressable>
+                    <Pressable
+                        onPress={toggleGameType}
+                        style={[{ flex: 1, justifyContent: 'center', borderRadius: 4, },
+                        gameType === 'Tournament' && { backgroundColor: '#FBFBFB' }]}
+                    >
+                        <Text style={{ textAlign: 'center', color: '#121212' }}>
+                            Tournament
+                        </Text>
+                    </Pressable>
                 </View>
             </View>
 
@@ -104,7 +124,7 @@ export default function HomeScreen({ navigation }) {
                 <View style={styles.bottomView}>
                     <AddPlayerInput addPlayer={addPlayer} />
                     <Pressable onPress={startGame}>
-                        <Text style={styles.startButton} onPress={startGame}>
+                        <Text style={styles.startButton}>
                             Start Game
                         </Text>
                     </Pressable>
@@ -150,7 +170,8 @@ const styles = StyleSheet.create({
     errorText: {
         color: "red",
     },
-    tabBar: {
+    gameTypeTabbar: {
+        width: '100%',
         marginTop: 4,
         padding: 4,
         backgroundColor: '#6FABB0',
@@ -158,15 +179,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     tab: {
-        padding: 8,
+        paddingVertial: 20,
         borderRadius: 4,
         flex: 1,
+    },
+    tabText: {
         color: "#FBFBFB",
+        textAlign: 'center',
+        paddingVertial: 20,
+    },
+    tabTextActive: {
+        color: '33595C',
         textAlign: 'center'
     },
     activeTab: {
         backgroundColor: '#FBFBFB',
-        color: '33595C',
     },
     bottomViewContainer: {
         backgroundColor: '#FBFBFB',
