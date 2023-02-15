@@ -92,6 +92,9 @@ export default function GameScreen({ navigation, route }) {
         navigation.navigate("Results", { gameScoreBoard });
     }
 
+    const [isTimerStarted, setIsTimerStarted] = useState(false);
+    const [isTimerPaused, setIsTimerPaused] = useState(false);
+
     const [seconds, setSeconds] = useState(60);
     const timerId = useRef<ReturnType<typeof setInterval>>(null);
     function startTimer() {
@@ -127,7 +130,7 @@ export default function GameScreen({ navigation, route }) {
 
         let seconds_ = Math.round((progress * 60) % 60);
         let secondsAsString: string;
-        if (seconds_.toString().length < 2){
+        if (seconds_.toString().length < 2) {
             secondsAsString = '0' + seconds_.toString();
         }
 
@@ -142,25 +145,48 @@ export default function GameScreen({ navigation, route }) {
                 End Game
             </Text>
             <View style={{ marginTop: 30 }}>
-                {gameType === 'Tournament' && <View style={{ alignItems: 'center' }}>
-                    <View style={{ width: 120, height: 120, borderWidth: 8, borderRadius: 120, justifyContent: 'center', alignItems: 'center', borderColor: '#6FABB0' }}>
+                {gameType === 'Tournament' &&
+                    <View style={{ alignItems: 'center' }}>
+                        {/* <View style={{ width: 120, height: 120, borderWidth: 8, borderRadius: 120, justifyContent: 'center', alignItems: 'center', borderColor: '#6FABB0' }}>
                         <Text style={{ fontWeight: '600', fontSize: 18, color: '#6FABB0' }}>
                             00:{seconds}
                         </Text>
-                    </View>
-                    <Progress.Circle
-                        size={110}
-                        borderWidth={1}
-                        progress={progress}
-                        showsText={true}
-                        formatText={formatProgress}
-                    />
-                    <View style={{ flexDirection: 'row', marginTop: 4 }}>
-                        <Button title='Start' onPress={startTimer} />
-                        <Button title='Stop' onPress={stopTimer} />
-                        <Button title='Reset' onPress={resetTimer} />
-                    </View>
-                </View>}
+                        </View> */}
+
+                        <Progress.Circle
+                            size={110}
+                            borderWidth={1}
+                            progress={progress}
+                            showsText={true}
+                            formatText={formatProgress}
+                            color={'#33595C'}
+                        />
+                        <View style={{ flexDirection: 'row', marginTop: 4 }}>
+                            <Pressable onPress={startTimer}
+                                style={[styles.endTurnButton, { margin: 1 }]}
+                                disabled={!isTimerStarted}
+                            >
+                                <Text style={{ color: "#fbfbfb", }}>
+                                    Start
+                                </Text>
+                            </Pressable>
+                            <Pressable
+                                onPress={stopTimer}
+                                style={[styles.endTurnButton, { margin: 1 }]}
+                            >
+                                <Text style={{ color: "#fbfbfb", }}>
+                                    Stop
+                                </Text>
+                            </Pressable>
+                            <Pressable 
+                            onPress={resetTimer}
+                             style={[styles.endTurnButton, { margin: 1 }]}
+                             >
+                                <Text style={{ color: "#fbfbfb", }}>
+                                     Reset </Text>
+                            </Pressable>
+                        </View>
+                    </View>}
 
                 <Text style={styles.title}>
                     Round {round}
