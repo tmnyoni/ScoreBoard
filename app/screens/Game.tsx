@@ -19,6 +19,8 @@ import MenuIcon from '../assets/menu.svg';
 import { showToastWithGravityAndOffset } from "../components/Toast";
 import { GameType } from "./Home";
 import { MINUTE } from "../lib/timer";
+import TimerProgres from "../components/Timer";
+import TimerProgress from "../components/Timer";
 
 export type ScoreBoard = {
     player: Player;
@@ -125,18 +127,6 @@ export default function GameScreen({ navigation, route }) {
         setSeconds(MINUTE);
     }
 
-    function formatProgress(progress: number) {
-        const minutes = Math.floor(progress);
-
-        let seconds_ = Math.round((progress * MINUTE) % MINUTE);
-        let secondsAsString: string;
-        if (seconds_.toString().length < 2) {
-            secondsAsString = '0' + seconds_.toString();
-        }
-
-        return `${minutes}:${secondsAsString ?? seconds_}`
-    }
-
     const [progress, setProgress] = useState<number>(0);
 
     return (
@@ -151,21 +141,7 @@ export default function GameScreen({ navigation, route }) {
             <View style={{ marginTop: 30 }}>
                 {gameType === 'Tournament' &&
                     <View style={{ alignItems: 'center' }}>
-                        {/* <View style={{ width: 120, height: 120, borderWidth: 8, borderRadius: 120, justifyContent: 'center', alignItems: 'center', borderColor: '#6FABB0' }}>
-                        <Text style={{ fontWeight: '600', fontSize: 18, color: '#6FABB0' }}>
-                            00:{seconds}
-                        </Text>
-                        </View> */}
-
-                        <Progress.Circle
-                            size={110}
-                            borderWidth={1}
-                            progress={progress}
-                            showsText={true}
-                            formatText={formatProgress}
-                            color={'#33595C'}
-                            thickness={8}
-                        />
+                       <TimerProgress progress={progress}/>
                         <View style={{ flexDirection: 'row', marginTop: 4 }}>
                             <Pressable onPress={startTimer}
                                 style={[styles.endTurnButton, { margin: 1 }]}
