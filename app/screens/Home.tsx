@@ -36,9 +36,20 @@ export default function HomeScreen({ navigation }) {
     const [players, setPlayers] = useState<Player[]>([]);
 
     function addPlayer(player: Player) {
+        const isPlayerNameTaken = checkIfPlayerNameIsNotTaken(player.name);
+
+        if (isPlayerNameTaken) {
+            showToastWithGravityAndOffset('Player name already taken');
+            return;
+        }
+
         setPlayers(
             (prevPlayers) => [...prevPlayers, player]
         );
+    }
+
+    function checkIfPlayerNameIsNotTaken(playerName: string) {
+        return players.some(player => player.name === playerName);
     }
 
     function removePlayer(playerId: string) {
@@ -48,10 +59,12 @@ export default function HomeScreen({ navigation }) {
     }
 
     function startGame() {
-        if (players.length > 0)
-            navigation.navigate("Game", { players });
-        else
-            showToastWithGravityAndOffset('You haven\'t added players');
+        if (players.length < 1) {
+            showToastWithGravityAndOffset('You need 2 or more players');
+            return;
+        }
+
+        navigation.navigate("Game", { players });
     }
 
     function showToastWithGravityAndOffset(message: string) {
@@ -172,7 +185,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        paddingTop: 40,
+        paddingTop: 20,
         alignSelf: 'center',
         borderTopWidth: 1,
         borderColor: '#f6f6f6',
